@@ -98,6 +98,7 @@ void setup_config(Config *config)
 {
     config->size_x = 26;
     config->size_y = 42;
+    config->numb_of_bush = 50;
     int check = 0;
     char rep[6];
     while (check == 0)
@@ -132,4 +133,5 @@ void setup_game(char ***map, Player *player, Config *config)
     setup_map_memory(map, config);
     player_spawn(map, player, config);
     girflfriend_spawn(map, config);
+    bush_spawn(map, config);
 }

@@ -8,6 +8,8 @@ void player_spawn(char ***map, Player *player, Config *config);
 
 void girflfriend_spawn(char ***map, Config * config);
 
+void bush_spawn(char ***map, Config *config);
+
 void ft_range(int ***tab, int min, int max);
 
 void print_tab(int *tab);

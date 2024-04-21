@@ -1,10 +1,12 @@
 #ifndef DEFINE_H
 #define DEFINE_H
 #pragma once
+#include <ncurses.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
-#define PIERRE 'o'
+#define BUSH 'o'
 #define PUTE 'p'
 #define SMART_PUTE 'P'
 #define PLAYER 'Q'

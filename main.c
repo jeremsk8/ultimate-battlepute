@@ -10,4 +10,7 @@ int	main(void)
     Config *config = malloc(sizeof(Config));
     setup_game(&map, player, config);
     game(map);
+    free(map);
+    free(player);
+    free(config);
 }
