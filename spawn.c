@@ -34,3 +34,20 @@ void bush_spawn(char ***map, Config *config)
     i++;
    }     
 }
+
+void pute_spawn(char ***map, struct Pute *pute, Config *config)
+{
+    int x;
+    int y;
+
+    srand(time(NULL)); 
+    do
+    {
+       x = rand() % (config->size_x- 2) + 1;
+       y = rand() % (config->size_y -2) + 1;
+    }
+    while ((*map)[x][y] != ' ');
+    (*map)[x][y] = PUTE; 
+    pute->coord_x = x;
+    pute->coord_y = y;
+}

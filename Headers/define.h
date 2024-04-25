@@ -25,10 +25,6 @@
 #define LOST -1
 #define CONTINUE 1
 #define CONTAMINE - 2
-#define PUTE_NUM 60
-#define PIERRE_NUM 80
-#define NUM_PUTE_PLAYER 0
-#define NUM_SMART_PUTE 4
 
 typedef struct
 {
@@ -43,5 +39,16 @@ typedef struct
     int numb_of_pute;
     int numb_of_bush;
 } Config;
+
+struct Pute
+{
+   struct Pute *prev;
+    int coord_x;
+    int coord_y;
+    struct Pute *next;
+   
+};
+
+
 
 #endif

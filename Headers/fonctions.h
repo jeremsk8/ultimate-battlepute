@@ -10,6 +10,8 @@ void girflfriend_spawn(char ***map, Config * config);
 
 void bush_spawn(char ***map, Config *config);
 
+void pute_spawn(char ***map, struct Pute *pute, Config *config);
+
 void ft_range(int ***tab, int min, int max);
 
 void print_tab(int *tab);

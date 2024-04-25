@@ -129,9 +129,37 @@ void setup_config(Config *config)
 
 void setup_game(char ***map, Player *player, Config *config)
 {
+    int i;
+
+    i = 0;
     setup_config(config);
     setup_map_memory(map, config);
     player_spawn(map, player, config);
     girflfriend_spawn(map, config);
     bush_spawn(map, config);
+    struct Pute *first = NULL;
+    struct Pute *last = NULL;
+    while (i < config->numb_of_pute)
+    {
+             struct  Pute *current_pute = malloc(sizeof(struct Pute));
+        if (current_pute == NULL)
+        {
+            printf("Erreur lors de l'allocation de mémoire.\n");
+            exit(EXIT_FAILURE);
+        }
+        pute_spawn(map, current_pute, config);
+        current_pute->prev = last;
+        current_pute->next = NULL;
+        if (first== NULL)
+        {
+            first= current_pute;
+        }
+        else
+        {
+            last->next = current_pute;
+        }
+        last = current_pute;
+        i++;
+    }
+
 }
