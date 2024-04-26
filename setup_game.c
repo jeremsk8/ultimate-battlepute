@@ -1,16 +1,6 @@
 #include  "Headers/fonctions.h"
 #include  "Headers/define.h"
 
-int ft_strcmp(char *s1, char*s2)
-{
-    while (*s1 ==*s2 && *s1)
-    {
-        s1++;
-        s2++;
-    }
-    return (*s1 - *s2);
-}
-
 void setup_map_struct(char ***map, Config *config)
 {
     int x;
@@ -127,39 +117,17 @@ void setup_config(Config *config)
     printf("pute :%d taille x %d y %d\n", config->numb_of_pute, config->size_x, config->size_y);
 }
 
-void setup_game(char ***map, Player *player, Config *config)
+void setup_game(char ***map, Entity *entity, Config *config)
 {
     int i;
 
     i = 0;
     setup_config(config);
     setup_map_memory(map, config);
-    player_spawn(map, player, config);
+    player_spawn(map, entity->player, config);
     girflfriend_spawn(map, config);
     bush_spawn(map, config);
-    struct Pute *first = NULL;
-    struct Pute *last = NULL;
-    while (i < config->numb_of_pute)
-    {
-             struct  Pute *current_pute = malloc(sizeof(struct Pute));
-        if (current_pute == NULL)
-        {
-            printf("Erreur lors de l'allocation de mémoire.\n");
-            exit(EXIT_FAILURE);
-        }
-        pute_spawn(map, current_pute, config);
-        current_pute->prev = last;
-        current_pute->next = NULL;
-        if (first== NULL)
-        {
-            first= current_pute;
-        }
-        else
-        {
-            last->next = current_pute;
-        }
-        last = current_pute;
-        i++;
-    }
+    pute_spawn(map,&entity->pute, config);
+
 
 }

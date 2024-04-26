@@ -40,14 +40,20 @@ typedef struct
     int numb_of_bush;
 } Config;
 
-struct Pute
+typedef struct Pute
 {
-   struct Pute *prev;
     int coord_x;
     int coord_y;
+    int id;
     struct Pute *next;
    
-};
+} Pute;
+
+typedef struct Entity
+{
+    Player *player;
+    Pute *pute;
+} Entity;
 
 
 

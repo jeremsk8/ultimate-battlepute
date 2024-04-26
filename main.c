@@ -2,15 +2,14 @@
 #include  "Headers/fonctions.h"
 #include  "Headers/define.h"
 
-
 int	main(void)
 {
 	char **map = NULL;
-    Player *player  = malloc(sizeof(Player));
+    Entity *entity = malloc(sizeof(Entity));
     Config *config = malloc(sizeof(Config));
-    setup_game(&map, player, config);
+    setup_game(&map, entity, config);
     game(map);
     free(map);
-    free(player);
+    free(entity);
     free(config);
 }
