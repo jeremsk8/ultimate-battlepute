@@ -26,7 +26,7 @@
 #define CONTINUE 1
 #define CONTAMINE - 2
 
-typedef struct
+typedef struct Player
 {
     int coord_x;
     int coord_y;

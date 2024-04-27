@@ -47,3 +47,10 @@ void coord_generator(char ***map, int *x, int *y, Config *config)
 	}
   while ((*map)[*x][*y] != ' ');
 }
+
+int check(char c)
+{
+  if (c == BUSH || c == MAP_LIMITE)
+    return 1;
+  return 0;
+}

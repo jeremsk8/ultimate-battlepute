@@ -1,19 +1,32 @@
 #include  "Headers/fonctions.h"
 #include  "Headers/define.h"
 
-void player_spawn(char ***map, Player *player, Config *config)
+struct Player *player_spawn(char ***map, Config *config)
 {
-    player = malloc(sizeof(Player));
-    player->coord_x =  config->size_x / 2;
-    player->coord_y = 4;
-    (*map)[player->coord_x][player->coord_y ] = PLAYER;
+    // Allouer de la mémoire pour la structure Player
+    Player *newplayer = malloc(sizeof(Player));
+
+    // Vérifier si malloc a réussi
+    if (newplayer == NULL) {
+        fprintf(stderr, "Erreur : impossible d'allouer de la mémoire pour newplayer\n");
+        return NULL; // Retourner NULL pour indiquer une erreur
+    }
+
+    // Initialiser les champs de la structure Player
+    newplayer->coord_x = config->size_x / 2;
+    newplayer->coord_y = 4;
+
+    // Mettre à jour la carte avec la position du nouveau joueur
+    (*map)[newplayer->coord_x][newplayer->coord_y] = PLAYER;
+
+    return newplayer; // Retourner le pointeur vers le nouveau joueur
 }
+
 
 void girflfriend_spawn(char ***map, Config * config)
 {
      (*map)[config->size_x  / 2][config->size_y - 7] = GIRLFRIEND;
 }
-
 
 void bush_spawn(char ***map, Config *config)
 {

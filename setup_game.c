@@ -124,10 +124,13 @@ void setup_game(char ***map, Entity *entity, Config *config)
     i = 0;
     setup_config(config);
     setup_map_memory(map, config);
-    player_spawn(map, entity->player, config);
+    entity->player = (Player*)player_spawn(map, config);
     girflfriend_spawn(map, config);
     bush_spawn(map, config);
     pute_spawn(map,&entity->pute, config);
+    initscr();
+    noecho();
+    curs_set(0);
 
 
 }

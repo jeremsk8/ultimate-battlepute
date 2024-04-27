@@ -5,10 +5,14 @@
 int	main(void)
 {
 	char **map = NULL;
+    char d;
     Entity *entity = malloc(sizeof(Entity));
     Config *config = malloc(sizeof(Config));
     setup_game(&map, entity, config);
-    game(map);
+    game(map, entity, config);
+    printf("\nappuyer sur une touche pour terminer");
+    scanf("%c\n", &d);
+    endwin();
     free(map);
     free(entity);
     free(config);

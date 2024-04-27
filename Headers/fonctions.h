@@ -4,7 +4,9 @@
 
 void setup_game(char ***map, Entity *entity, Config *config);
 
-void player_spawn(char ***map, Player *player, Config *config);
+struct Player *player_spawn(char ***map, Config *config);
+
+void setup_map_struct(char ***map, Config *config);
 
 void girflfriend_spawn(char ***map, Config * config);
 
@@ -22,6 +24,8 @@ int ft_strcmp(char *s1, char*s2);
 
 void print_tab(int *tab);
 
-void game(char **map);
+int check(char c);
+
+void game(char **map, Entity *entity, Config *config);
 
 #endif
