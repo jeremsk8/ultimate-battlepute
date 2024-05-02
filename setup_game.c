@@ -110,7 +110,7 @@ void setup_config(Config *config)
     
         if(ft_strcmp(rep,"easy") == 0)
         {
-            config->numb_of_pute = 40;
+            config->numb_of_pute = 100;
             check = 1;
         }
     }
@@ -119,9 +119,6 @@ void setup_config(Config *config)
 
 void setup_game(char ***map, Entity *entity, Config *config)
 {
-    int i;
-
-    i = 0;
     setup_config(config);
     setup_map_memory(map, config);
     entity->player = (Player*)player_spawn(map, config);
@@ -131,6 +128,4 @@ void setup_game(char ***map, Entity *entity, Config *config)
     initscr();
     noecho();
     curs_set(0);
-
-
 }

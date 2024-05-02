@@ -48,9 +48,67 @@ void coord_generator(char ***map, int *x, int *y, Config *config)
   while ((*map)[*x][*y] != ' ');
 }
 
-int check(char c)
+int check(char c, int is_player)
 {
-  if (c == BUSH || c == MAP_LIMITE)
-    return 1;
+  if (is_player)
+  {
+    if (c == BUSH || c == MAP_LIMITE)
+      return 1;
+    return 0;
+  }
+  else
+  {
+    if (c == PUTE || c == MAP_LIMITE || c == SAFE_ZONE || c == SMART_PUTE)
+      return 1;
+    else if (c == BUSH)
+      return 2;
+  }
   return 0;
+}
+
+void case_move(char ***map, int *x, int *y, int direction, int is_col)
+{
+    int tmp = 0;
+
+    if (is_col)
+    {
+        direction ? ++(*x) : --(*x); 
+        if (check((*map)[*x][*y], 0) == 1)
+        {
+            direction ? --(*x) : ++(*x); 
+        }
+        else if (check((*map)[*x][*y], 0) == 2)
+        {
+            while (check((*map)[*x][*y], 0) == 2)
+            {
+                direction ? ++(*x) : --(*x); 
+                tmp++;
+                if (check((*map)[*x][*y], 0) == 1)
+                {
+                    direction ? (*x -= (tmp + 1)) : (*x += (tmp + 1)); 
+                }
+            }
+        }
+    }
+    else
+    {
+        
+        direction ? --(*y) : ++(*y); 
+        if (check((*map)[*x][*y], 0) == 1)
+        {
+            direction ? ++(*y) : --(*y);
+        }
+        else if (check((*map)[*x][*y], 0) == 2)
+        {
+            while (check((*map)[*x][*y], 0) == 2)
+            {
+                direction ? --(*y) : ++(*y); 
+                tmp++;
+                if (check((*map)[*x][*y], 0) == 1)
+                {
+                    direction ? (*y += (tmp + 1)) : (*y -= (tmp + 1)); 
+                }
+            }
+        }
+    }
 }

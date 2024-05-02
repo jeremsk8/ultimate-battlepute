@@ -3,25 +3,17 @@
 
 struct Player *player_spawn(char ***map, Config *config)
 {
-    // Allouer de la mémoire pour la structure Player
     Player *newplayer = malloc(sizeof(Player));
-
-    // Vérifier si malloc a réussi
     if (newplayer == NULL) {
         fprintf(stderr, "Erreur : impossible d'allouer de la mémoire pour newplayer\n");
-        return NULL; // Retourner NULL pour indiquer une erreur
+        return NULL;
     }
-
-    // Initialiser les champs de la structure Player
     newplayer->coord_x = config->size_x / 2;
     newplayer->coord_y = 4;
-
-    // Mettre à jour la carte avec la position du nouveau joueur
     (*map)[newplayer->coord_x][newplayer->coord_y] = PLAYER;
 
-    return newplayer; // Retourner le pointeur vers le nouveau joueur
+    return newplayer; 
 }
-
 
 void girflfriend_spawn(char ***map, Config * config)
 {
@@ -52,12 +44,15 @@ void bush_spawn(char ***map, Config *config)
 void pute_spawn(char ***map, Pute **pute, Config *config)
 {
     int x;
-  int y;
+    int y;
+    int i;
 
-  for (int i = 0; i < config->numb_of_pute; i++)
+    i = 0;
+  while(i < config->numb_of_pute)
 	{
 	  coord_generator (map, &x, &y, config);
 	  pushPute (pute, x, y, i);
 	  (*map)[x][y] = PUTE;
+    i++;
 	}
 }

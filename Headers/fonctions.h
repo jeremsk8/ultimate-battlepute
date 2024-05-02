@@ -24,8 +24,10 @@ int ft_strcmp(char *s1, char*s2);
 
 void print_tab(int *tab);
 
-int check(char c);
+int check(char c, int is_player);
 
 void game(char **map, Entity *entity, Config *config);
+
+void case_move(char ***map, int *x, int *y, int direction, int is_col);
 
 #endif

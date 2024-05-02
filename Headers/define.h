@@ -5,6 +5,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <pthread.h>
+#include <time.h>
+#include <unistd.h>
 
 #define BUSH 'o'
 #define PUTE 'p'
@@ -54,6 +57,17 @@ typedef struct Entity
     Player *player;
     Pute *pute;
 } Entity;
+
+typedef struct {
+    Player *player;
+    char ***map;
+    Config *config;
+} Player_Args;
+
+typedef struct {
+    Pute *pute;
+    char ***map;
+}Pute_args;
 
 
 

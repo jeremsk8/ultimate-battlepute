@@ -1,13 +1,11 @@
 #include  "Headers/fonctions.h"
 #include  "Headers/define.h"
 
-
 void display_map(char **map)
 {
     int i = 0;
     int y = 0; 
     clear(); 
-
     while (map[i] != NULL) {
         int j = 0;
         int x = 0; 
@@ -21,174 +19,137 @@ void display_map(char **map)
         y++; 
         i++;
     }
-
-    //refresh(); 
+    refresh();
 }
 
-void player_move(Player *player, char ***map, Config *config)
+void *player_move(void *args)
 {
-   
-    int ch = getch();
-    (*map)[player->coord_x][player->coord_y] = ' ';
-    setup_map_struct(map, config);
-     switch (ch) {
-            case UP:
-                    player->coord_x--;
-                    if (check((*map)[player->coord_x][player->coord_y]))
-                        player->coord_x++;
-                break;
-            case DOWN:
-                    player->coord_x++;
-                    if (check((*map)[player->coord_x][player->coord_y]))
-                        player->coord_x--;
-                break;
-            case LEFT:
-                    player->coord_y--;
-                    if (check((*map)[player->coord_x][player->coord_y]))
-                        player->coord_y++;
-                break;
-            case RIGHT:
-                    player->coord_y++;
-                    if (check((*map)[player->coord_x][player->coord_y]))
-                        player->coord_y--;
-                break;
+    Player_Args *player_args = (Player_Args *)args;
+    Player *player = player_args->player;
+    char ***map = player_args->map;
+    Config *config = player_args->config;
+    int ch;
+    while (1)
+    {
+        ch = getch();
+        if (ch == 'a')
+            pthread_exit(NULL);
+        (*map)[player->coord_x][player->coord_y] = ' ';
+        setup_map_struct(map, config);
+        switch (ch)
+        {
+        case UP:
+            player->coord_x--;
+            if (check((*map)[player->coord_x][player->coord_y], 1))
+                player->coord_x++;
+            break;
+        case DOWN:
+            player->coord_x++;
+            if (check((*map)[player->coord_x][player->coord_y], 1))
+                player->coord_x--;
+            break;
+        case LEFT:
+            player->coord_y--;
+            if (check((*map)[player->coord_x][player->coord_y], 1))
+                player->coord_y++;
+            break;
+        case RIGHT:
+            player->coord_y++;
+            if (check((*map)[player->coord_x][player->coord_y], 1))
+                player->coord_y--;
+            break;
         }
         (*map)[player->coord_x][player->coord_y] = PLAYER;
-
+    }
+    free(player_args);
 }
 
-void pute_move(Pute *pute, Config *config, char ***map)
+void *pute_move(void *args)
 {
-    Pute *current = pute;
+    char ***map;
     int x;
     int y;
-    int tmp = 0;
-    while (current != NULL)
+    Pute_args *putes_args = (Pute_args *)args;
+    Pute *current = putes_args->pute;
+    Pute *head = putes_args->pute;
+    map = putes_args->map;
+    while (1)
     {
-        (*map)[current->coord_x][current->coord_y] = ' ';
-        int direction = rand() % 4;
-        x = current->coord_x;
-        y = current->coord_y;
-        switch (direction)
+        while (current != NULL)
         {
-        case 0: // haut
-
-            current->coord_x--;
-            x--;
-            if ((*map)[x][y] == PUTE || (*map)[x][y] == SAFE_ZONE || (*map)[x][y] == MAP_LIMITE || (*map)[x][y] == SMART_PUTE)
+            if ((*map)[current->coord_x][current->coord_y] != PLAYER)
+                (*map)[current->coord_x][current->coord_y] = ' ';
+            int direction = rand() % 4;
+            x = current->coord_x;
+            y = current->coord_y;
+            switch (direction)
             {
-                current->coord_x++;
-                x++;
+            case 0: // haut
+                case_move(map, &x, &y, 0, 1);
+                break;
+            case 1: // bas
+                case_move(map, &x, &y, 1, 1);
+                break;
+            case 2: // gauche
+                case_move(map, &x, &y, 0, 0);
+                break;
+            case 3: // droite
+                case_move(map, &x, &y, 1, 0);
+                break;
+            default:
+                break;
             }
-            else if ((*map)[x][y] == BUSH)
-            {
-                while ((*map)[x][y] == BUSH)
-                {
-                    current->coord_x--;
-                    x--;
-                    tmp++;
-                    if ((*map)[x][y] == SAFE_ZONE || (*map)[x][y] == MAP_LIMITE || (*map)[x][y] == PUTE || (*map)[x][y] == SMART_PUTE)
-                    {
-                        current->coord_x += (tmp + 1);
-                        x += (tmp + 1);
-                    }
-                }
-            }
-            tmp = 0;
-
-            break;
-        case 1: // bas
-
-            current->coord_x++;
-            x++;
-            if ((*map)[x][y] == PUTE || (*map)[x][y] == SAFE_ZONE || (*map)[x][y] == MAP_LIMITE || (*map)[x][y] == SMART_PUTE)
-            {
-                current->coord_x--;
-                x--;
-            }
-            else if ((*map)[x][y] == BUSH)
-            {
-                while ((*map)[x][y] == BUSH)
-                {
-                    current->coord_x++;
-                    x++;
-                    tmp++;
-                    if ((*map)[x][y] == SAFE_ZONE || (*map)[x][y] == MAP_LIMITE || (*map)[x][y] == PUTE || (*map)[x][y] == SMART_PUTE)
-                    {
-                        current->coord_x -= (tmp + 1);
-                        x -= (tmp + 1);
-                    }
-                }
-            }
-            tmp = 0;
-
-            break;
-        case 2: // gauche
-
-            current->coord_y--;
-            y--;
-            if ((*map)[x][y] == PUTE || (*map)[x][y] == SAFE_ZONE || (*map)[x][y] == MAP_LIMITE || (*map)[x][y] == SMART_PUTE)
-            {
-                current->coord_y++;
-                y++;
-            }
-            else if ((*map)[x][y] == BUSH)
-            {
-                while ((*map)[x][y] == BUSH)
-                {
-                    current->coord_y--;
-                    y--;
-                    tmp++;
-                    if ((*map)[x][y] == SAFE_ZONE || (*map)[x][y] == MAP_LIMITE || (*map)[x][y] == PUTE || (*map)[x][y] == SMART_PUTE)
-                    {
-                        current->coord_y += (tmp + 1);
-                        y += (tmp + 1);
-                    }
-                }
-            }
-            tmp = 0;
-
-            break;
-        case 3: // droited
-            current->coord_y++;
-            y++;
-            if ((*map)[x][y] == PUTE || (*map)[x][y] == SAFE_ZONE || (*map)[x][y] == MAP_LIMITE || (*map)[x][y] == SMART_PUTE)
-            {
-                current->coord_y--;
-                y--;
-            }
-            else if ((*map)[x][y] == BUSH)
-            {
-                while ((*map)[x][y] == BUSH)
-                {
-                    current->coord_y++;
-                    y++;
-                    tmp++;
-                    if ((*map)[x][y] == SAFE_ZONE || (*map)[x][y] == MAP_LIMITE || (*map)[x][y] == PUTE || (*map)[x][y] == SMART_PUTE)
-                    {
-                        current->coord_y -= (tmp + 1);
-                        y -= (tmp + 1);
-                    }
-                }
-            }
-            tmp = 0;
-
-            break;
-        default:
-            break;
+            current->coord_x = x;
+            current->coord_y = y;
+            (*map)[x][y] = PUTE;
+            current = current->next;
         }
-        (*map)[current->coord_x][current->coord_y] = PUTE;
-        current = current->next;
+        current = head;
+        usleep(600000);
     }
+    free(putes_args);
 }
 
-void game(char **map, Entity *entity, Config *config)
+void create_player_thread(Entity *entity, char ***map, Config *config) {
+    pthread_t player_thread;
+    Player_Args *player_args = (Player_Args *)malloc(sizeof(Player_Args));
+    player_args->player = entity->player;
+    player_args->map = map;
+    player_args->config = config;
+    pthread_create(&player_thread, NULL, player_move, (void *)player_args);
+}
+
+void create_pute_thread(Entity *entity, char ***map)
 {
-    while (map[2][2] != PLAYER)
-    {
+    pthread_t putes_thread;
+    Pute_args *putes_args = (Pute_args *)malloc(sizeof(Pute_args));
+    putes_args->pute = entity->pute;
+    putes_args->map = map;
+    pthread_create(&putes_thread, NULL, pute_move,(void *)putes_args);
+}
+
+int checkpos(Player *player, char **map)
+{
+    int x;
+    int y;
+
+    x = player->coord_x;
+    y = player->coord_y;
+    if (map[x][y] == PUTE)
+        return 0;
+    else    
+        return 1;
+}
+
+void game(char **map, Entity *entity, Config *config) {
+    //int check = 1;
+    create_player_thread(entity, &map, config);
+    create_pute_thread(entity,&map);
+    while (checkpos(entity->player, map)) {
+        //check = checkpos(entity->player, map);
         display_map(map);
-        printf("\n %d %d\n", entity->player->coord_x, entity->player->coord_y);
-         player_move(entity->player, &map, config);
-         pute_move(entity->pute,config,&map);
-    }
+        usleep(10000);
+    } 
+
+    clear();
 }

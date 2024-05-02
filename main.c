@@ -11,9 +11,11 @@ int	main(void)
     setup_game(&map, entity, config);
     game(map, entity, config);
     printf("\nappuyer sur une touche pour terminer");
-    scanf("%c\n", &d);
+    scanf("%c", &d);
     endwin();
     free(map);
     free(entity);
     free(config);
+    return 0;
+
 }
